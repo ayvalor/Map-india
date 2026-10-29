@@ -1,65 +1,56 @@
 # The Bharat Atlas
 
-A premium, interactive digital atlas and geography learning portal designed to international standards. Featuring a light-only design system, official boundary lines, and educational quiz games, this application is perfect for school students (K-12).
+An interactive India map and geography learning app built with React, TypeScript, D3 Geo, Framer Motion and Tailwind CSS.
 
-## Tech Stack
-* **Vite + React (TypeScript)**: Snappy local developer environment and lightweight bundles.
-* **Tailwind CSS v4**: Modern CSS-first utility compilation.
-* **Framer Motion**: Smooth, hardware-accelerated fluid transitions.
-* **D3-Geo**: Secure SVG mapping and projection calculations.
-* **Lucide React**: Outline iconography.
+## Explore
 
-## Design Philosophy
-* **Regal Serif Typography**: Headings styled in `Cinzel` serif font.
-* **Jakarta Sans Typography**: Body copy styled in `Plus Jakarta Sans`.
-* **National Light Theme**: Pure white background, subtle cream borders, deep navy blue accents, rich saffron, and muted gold highlights.
-* **No Flashy Colors**: A dignified, clean visual representation.
+- Click a state or choose one from the menu to fit it in the center of the map. All 28 states and 8 union territories are accessible, including small island territories.
+- Explore **7,176 city/town locations** across India. Each selected state has a searchable, paginated directory containing every available name. Click a place to center it and open its details.
+- Map markers are batched into one SVG path. Labels stay at a readable size, with up to 10 on narrow viewports or 18 on wider maps; the selected city is always labeled. Use zoom to explore nearby locations.
+- Search names and alternate spellings, including Indian scripts. Use arrow keys and Enter to select, or Escape to close.
+- Read the original educational articles where available, or geographic coordinates and source information for other places. The five-question geography quiz remains available.
+- On mobile, details appear below the map. On desktop, they occupy their own column without covering the selected state.
 
-## Structure
-```
-app/
-├── public/
-│   ├── data/
-│   │   └── india_states.geojson  # Local map coordinates (Survey of India compliant)
-│   └── favicon.svg               # Portal icon
-├── src/
-│   ├── components/
-│   │   ├── Map/
-│   │   │   └── IndiaMap.tsx      # SVG projection & zoom coordinator
-│   │   └── UI/
-│   │       ├── AshokaEmblem.tsx  # High-quality emblem vector
-│   │       ├── FlagSection.tsx   # Pingali Venkayya flag symbolism
-│   │       ├── DetailsDrawer.tsx # Slide drawer with statistics & trivia
-│   │       ├── SearchModal.tsx   # Global search dialog
-│   │       ├── QuizGame.tsx      # Geography game
-│   │       └── Header.tsx        # Top-level branding & navigation
-│   ├── data/
-│   │   └── educationalData.ts    # Curated school database
-│   ├── App.tsx                   # Main layout coordinator
-│   ├── index.css                 # Custom @theme declarations
-│   └── main.tsx                  # Mount point
-├── index.html                    # SEO and security headers
-├── package.json
-└── vite.config.ts
+## Run locally
+
+Use **Node.js 24** and npm. From this repository's root:
+
+```sh
+npm ci
+npm run dev
 ```
 
-## Running the Portal Locally
+Open the local URL printed by Vite. For a production preview:
 
-1. Open your terminal in the `app` directory.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the local development server:
-   ```bash
-   npm run dev
-   ```
-4. Open the displayed URL (typically `http://localhost:5173`) in your browser.
-
-## Building for Production
-
-Compile static assets for global hosting (GitHub Pages, Netlify, Cloudflare, etc.):
-```bash
+```sh
+npm run lint
+npm test
 npm run build
+npm run preview -- --host 127.0.0.1 --port 4174
 ```
-The output will be generated under the `dist` folder.
+
+The deployable site is in `dist/`. Upload the **contents** of that folder to a static host. Relative asset URLs support both a domain root and a subdirectory such as `/Map-india/`; keep the directory URL's trailing slash. Opening source `index.html` directly from the filesystem is not supported.
+
+The production HTML retains its Content Security Policy. Vite development removes the policy to allow its local refresh script and WebSocket. Fonts use Google Fonts, with local font fallbacks. Map and city data are bundled locally, so exploration does not call a third-party map API or require API keys.
+
+## Data and coverage
+
+The directory contains 7,175 GeoNames populated places/administrative seats and one original historical location. It is a countrywide gazetteer, **not a complete census of every village or legally designated city/town**. Population values from GeoNames have no reference year and are identified as source estimates. Existing educational descriptions are inherited project content, not newly verified statistics.
+
+GeoNames data is used under **CC BY 4.0**. Attribution is included in the app footer, the directory metadata and [DATA-SOURCES.md](DATA-SOURCES.md). That document describes filtering, state mappings, corrections, source hashes and the reproducible import command. The existing map boundaries are retained; this project does not certify them as official or survey accurate.
+
+## Code layout
+
+```text
+public/data/india_states.geojson   Existing state boundaries
+public/data/india_cities.json      Countrywide directory and provenance
+scripts/import-geonames.cjs       Rebuild directory from official source downloads
+src/data/cities.ts                Validated, cached loader and name matching
+src/data/educationalData.ts       Existing state profiles and city articles
+src/components/Map/IndiaMap.tsx   Map interaction and state city directory
+src/components/Map/mapGeometry.ts Projection, state fit and label placement
+src/components/UI/               Header, details, search and lazy-loaded quiz
+src/App.tsx                      Shared selection and responsive layout
+```
+
+Successful boundary and city fetches are cached for the session. Failed requests offer retry controls. Geometry is memoized, city rendering is bounded, and reduced-motion preferences are respected.

@@ -932,7 +932,7 @@ const utCapitals: Record<string, string> = {
   "Chandigarh": "Chandigarh",
   "Lakshadweep": "Kavaratti",
   "Puducherry": "Puducherry",
-  "Andaman & Nicobar": "Port Blair",
+  "Andaman & Nicobar": "Sri Vijaya Puram",
   "Dadra and Nagar Haveli and Daman and Diu": "Daman"
 };
 
@@ -981,11 +981,12 @@ otherUTs.forEach(ut => {
         {
           name: utCapitals[ut] || ut,
           coordinates: utCoords[ut] || [78.96, 22.59],
-          area: utAreas[ut] || "N/A",
-          population: utPopulations[ut] || "N/A",
-          history: `Historically established as a major center within the region.`,
-          landmarks: ["Local tourist centers", "Local beaches or parks"],
-          geography: "Regional coastal or flat topography typical of this Union Territory.",
+          // Territory-wide figures are not city figures. Leave unverified fields empty.
+          area: "",
+          population: "",
+          history: "",
+          landmarks: [],
+          geography: "",
           funFacts: [`It is the administrative capital of the union territory of ${ut}.`]
         }
       ],

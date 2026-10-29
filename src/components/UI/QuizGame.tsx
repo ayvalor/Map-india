@@ -4,11 +4,20 @@ import { HelpCircle, CheckCircle2, XCircle, Award, RotateCcw, ArrowRight, BookOp
 import { educationalData } from '../../data/educationalData';
 
 interface QuizQuestion {
-  id: number;
+  id: string;
   question: string;
   options: string[];
   answer: string;
   fact: string;
+}
+
+function shuffle<T>(items: readonly T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
 
 export const QuizGame: React.FC = () => {
@@ -30,15 +39,14 @@ export const QuizGame: React.FC = () => {
       const state = educationalData[stateName];
       if (state.capital && state.capital !== 'N/A') {
         // Find 3 fake capitals as distractors
-        const otherCapitals = states
-          .map((s) => educationalData[s].capital)
+        const otherCapitals = [...new Set(states.map((s) => educationalData[s].capital))]
           .filter((cap) => cap && cap !== 'N/A' && cap !== state.capital);
         
-        const shuffledFakes = [...otherCapitals].sort(() => 0.5 - Math.random());
-        const options = [state.capital, shuffledFakes[0], shuffledFakes[1], shuffledFakes[2]].sort();
+        const shuffledFakes = shuffle(otherCapitals);
+        const options = shuffle([state.capital, ...shuffledFakes.slice(0, 3)]);
 
         questionTemplates.push({
-          id: idx * 10 + 1,
+          id: `capital-${idx}`,
           question: `What is the capital city of ${stateName}?`,
           options,
           answer: state.capital,
@@ -56,11 +64,11 @@ export const QuizGame: React.FC = () => {
           const otherCities = states
             .flatMap((s) => educationalData[s].cities.map((c) => c.name))
             .filter((cName) => cName !== city.name);
-          const shuffledFakes = [...otherCities].sort(() => 0.5 - Math.random());
-          const options = [city.name, shuffledFakes[0], shuffledFakes[1], shuffledFakes[2]].sort();
+          const shuffledFakes = shuffle([...new Set(otherCities)]);
+          const options = shuffle([city.name, ...shuffledFakes.slice(0, 3)]);
 
           questionTemplates.push({
-            id: idx * 10 + 2,
+            id: `landmark-${idx}-${city.name}`,
             question: `In which prominent Indian city can you find the famous landmark "${landmark}"?`,
             options,
             answer: city.name,
@@ -76,11 +84,11 @@ export const QuizGame: React.FC = () => {
       if (state.funFact && state.funFact.length > 30) {
         const factText = state.funFact.replace(stateName, 'This state');
         const otherStates = states.filter((s) => s !== stateName);
-        const shuffledFakes = [...otherStates].sort(() => 0.5 - Math.random());
-        const options = [stateName, shuffledFakes[0], shuffledFakes[1], shuffledFakes[2]].sort();
+        const shuffledFakes = shuffle(otherStates);
+        const options = shuffle([stateName, ...shuffledFakes.slice(0, 3)]);
 
         questionTemplates.push({
-          id: idx * 10 + 3,
+          id: `fact-${idx}`,
           question: `Which state is this fact referring to: "${factText}"?`,
           options,
           answer: stateName,
@@ -90,9 +98,7 @@ export const QuizGame: React.FC = () => {
     });
 
     // Shuffle and pick 5 questions for a fast, light round
-    const shuffledQuestions = [...questionTemplates]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 5);
+    const shuffledQuestions = shuffle(questionTemplates).slice(0, 5);
 
     setQuestions(shuffledQuestions);
     setCurrentIdx(0);
@@ -187,7 +193,7 @@ export const QuizGame: React.FC = () => {
               const isSelected = selectedAnswer === option;
               const isCorrectAnswer = option === questions[currentIdx].answer;
 
-              let buttonStyle = 'bg-cream-50/50 hover:bg-cream-100 border border-cream-200 text-navy-850 hover:border-gold/50';
+              let buttonStyle = 'bg-cream-50/50 hover:bg-cream-100 border border-cream-200 text-navy-800 hover:border-gold/50';
               
               if (showFeedback) {
                 if (isCorrectAnswer) {
@@ -195,7 +201,7 @@ export const QuizGame: React.FC = () => {
                 } else if (isSelected) {
                   buttonStyle = 'bg-red-500/10 border-red-500 text-red-700 font-bold';
                 } else {
-                  buttonStyle = 'opacity-40 border-cream-105';
+                  buttonStyle = 'opacity-40 border-cream-100';
                 }
               }
 
