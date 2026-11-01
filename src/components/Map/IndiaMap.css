@@ -12,8 +12,11 @@
 .india-map__viewport{position:relative;width:100%;height:clamp(480px,66vh,660px);overflow:hidden;background:radial-gradient(ellipse at center,#fff 38%,#faf9f5 100%)}
 .india-map__svg{display:block;width:100%;height:100%;overflow:hidden;touch-action:pan-y}
 .india-map__state{cursor:pointer;transition:fill .16s,stroke .16s}
+/* Browser focus/tap frames scale with SVG zoom. Use the geographic stroke for focus instead. */
+.india-map__svg .india-map__state,.india-map__svg .india-map__state:focus,.india-map__svg .india-map__city,.india-map__svg .india-map__city:focus{outline:0 none transparent!important;outline-offset:0;box-shadow:none;-webkit-tap-highlight-color:transparent}
 .india-map__state:hover,.india-map__state:focus-visible{fill:#f2e9d8;stroke:#9a7846;stroke-width:1.6;outline:none}
 .india-map__state[aria-pressed=true]{fill:#fff0e5;stroke:#d96929;stroke-width:1.5}
+.india-map__state:focus-visible{stroke:#95652f;stroke-width:2}
 .india-map__city{cursor:pointer;outline:none}
 .india-map__city text{font-family:var(--font-sans,system-ui,sans-serif);font-size:12px;font-weight:650;fill:#26364e;pointer-events:none}
 .india-map__city rect{fill:#fffefb;stroke:#ddd7cb;stroke-width:1;filter:drop-shadow(0 1px 2px #1422380c)}

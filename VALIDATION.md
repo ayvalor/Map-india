@@ -29,3 +29,13 @@ Verified locally in Chromium-based Microsoft Edge using the production build, pl
 ## Performance choices and limits
 
 The 1.61 MB uncompressed directory loads asynchronously from local static assets. The main JavaScript bundle is about 437 kB (142 kB gzip); quiz code loads separately. Projected boundaries are memoized, map hover uses CSS, markers share a single path, and the UI limits map labels to 10/18 depending on viewport width. These are structural improvements, not a universal frame-rate guarantee. Safari and physical mobile hardware were not exercised in this run.
+
+## Map styling and quiz update — 1 November 2026
+
+- Removed browser focus/tap rectangles from zoomed SVG state and city controls; keyboard focus remains visible through geographic and label strokes. All 36 state paths computed `outline: none` with zero width. Focused, selected Andaman & Nicobar, Kerala, Rajasthan and Lakshadweep displayed without a rectangular frame. The original reported black frame was not reproducible before the change, so its precise browser-specific trigger remains unconfirmed.
+- Replaced the BH badge with an IN badge on saffron, white and green, shared by the header and favicon. The logo remains visible on narrow screens.
+- Expanded the quiz to 6,780 questions: 36 capitals, 168 landmarks, 6,545 city/state associations and 31 facts. Mixed rounds balance categories. Ambiguous city/state names and duplicate landmark associations are excluded; underlying educational entries were not independently re-audited.
+- TypeScript and Vite production builds passed. Oxlint checked 18 files with zero diagnostics. All 12 directory/quiz regression tests passed, including unique answers, category balance, session history, exhaustion before repeats, ambiguity filtering and fallback pools.
+- Completed a five-question Mixed round, a ten-question Landmarks round at 390 × 844, and a twenty-question City → State round at 320 × 740 in the in-app browser. Each round had unique questions and four distinct choices; answers locked after submission, and final scores matched feedback (1/5, 3/10 and 6/20 respectively).
+- Play again and Change quiz options worked; session question history survived a reload and topic changes. The tested mobile layouts had no horizontal page overflow. No runtime errors were logged during these successful flows.
+- Removed the unused root-level duplicate `QuizGame.tsx` after checking references and TypeScript project boundaries, plus unused CSS tokens/animations/glow classes. The active quiz component, source data, licenses, import script and tests remain in the repository.

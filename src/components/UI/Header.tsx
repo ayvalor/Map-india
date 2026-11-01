@@ -10,9 +10,9 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onSearchClick, activeView, onViewChange }) => (
   <header className="sticky top-0 z-40 border-b border-cream-200 bg-white/95 px-3 py-3 sm:px-6 sm:py-4 lg:px-8 flex flex-wrap items-center justify-between gap-3">
     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-      <div aria-hidden="true" className="hidden sm:flex w-10 h-10 shrink-0 bg-navy text-gold-100 border border-gold/30 rounded-xl items-center justify-center font-bold text-sm shadow-sm">BH</div>
+      <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="IN" width={40} height={40} className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-xl shadow-sm" />
       <div className="min-w-0">
-        <h1 className="text-sm sm:text-lg font-medium text-navy m-0 tracking-wide leading-tight font-regal">THE BHARAT ATLAS</h1>
+        <h1 className="text-xs sm:text-lg font-medium text-navy m-0 tracking-wide leading-tight font-regal">THE BHARAT ATLAS</h1>
         <p className="hidden md:block text-xs font-semibold text-gold-700 tracking-wide uppercase mt-1">A geographic guide to India</p>
       </div>
     </div>

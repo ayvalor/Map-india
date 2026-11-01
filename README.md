@@ -8,7 +8,8 @@ An interactive India map and geography learning app built with React, TypeScript
 - Explore **7,176 city/town locations** across India. Each selected state has a searchable, paginated directory containing every available name. Click a place to center it and open its details.
 - Map markers are batched into one SVG path. Labels stay at a readable size, with up to 10 on narrow viewports or 18 on wider maps; the selected city is always labeled. Use zoom to explore nearby locations.
 - Search names and alternate spellings, including Indian scripts. Use arrow keys and Enter to select, or Escape to close.
-- Read the original educational articles where available, or geographic coordinates and source information for other places. The five-question geography quiz remains available.
+- Read the original educational articles where available, or geographic coordinates and source information for other places.
+- Choose Mixed, Capitals, Landmarks, City → State or Fun facts quizzes, with 5, 10 or 20 questions per round. The current directory supplies a bank of 6,780 questions. Questions have four distinct answers, and session history favors unused questions until the selected topic is exhausted.
 - On mobile, details appear below the map. On desktop, they occupy their own column without covering the selected state.
 
 ## Run locally
@@ -47,6 +48,7 @@ public/data/india_cities.json      Countrywide directory and provenance
 scripts/import-geonames.cjs       Rebuild directory from official source downloads
 src/data/cities.ts                Validated, cached loader and name matching
 src/data/educationalData.ts       Existing state profiles and city articles
+src/data/quiz.ts                  Topic banks, ambiguity filtering and round selection
 src/components/Map/IndiaMap.tsx   Map interaction and state city directory
 src/components/Map/mapGeometry.ts Projection, state fit and label placement
 src/components/UI/               Header, details, search and lazy-loaded quiz
@@ -54,3 +56,5 @@ src/App.tsx                      Shared selection and responsive layout
 ```
 
 Successful boundary and city fetches are cached for the session. Failed requests offer retry controls. Geometry is memoized, city rendering is bounded, and reduced-motion preferences are respected.
+
+The IN badge uses saffron, white and green. SVG state and city controls use their geographic/label strokes for keyboard focus, without a rectangular focus frame that grows when the map is zoomed.

@@ -215,7 +215,7 @@ export const App: React.FC = () => {
         ) : (
           /* Geography Quiz Panel */
           <div className="max-w-3xl w-full mx-auto my-4">
-            <Suspense fallback={<p role="status" className="p-8">Loading quiz…</p>}><QuizGame /></Suspense>
+            <Suspense fallback={<p role="status" className="p-8">Loading quiz…</p>}><QuizGame cityDirectory={cityDirectory} /></Suspense>
           </div>
         )}
 
